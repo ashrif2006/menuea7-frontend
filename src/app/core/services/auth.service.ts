@@ -9,10 +9,8 @@ import { tap } from 'rxjs';
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/Auth`;
 
-  // Signal بيحمل بيانات المستخدم الحالي (أو null لو مش مسجل دخول)
   private currentUserSignal = signal<{ fullName: string; cafeName: string } | null>(null);
 
-  // Computed Signal بيتحدث تلقائيًا لما currentUserSignal يتغير
   isLoggedIn = computed(() => this.currentUserSignal() !== null);
   currentUser = computed(() => this.currentUserSignal());
 
