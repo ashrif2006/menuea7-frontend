@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-primary: #C1602B;
+  --color-primary-dark: #A34E22;
+  --color-cream: #FDF6F0;
+  --color-cream-soft: #FBEEE4;
+  --color-dark: #3D2A20;
+  --color-text-dark: #2B1D14;
+  --color-text-muted: #6B5D53;
+  --color-white: #FFFFFF;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 4px 20px rgba(43, 29, 20, 0.06);
+}
+
+* {
+  font-family: 'Cairo', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-text-dark);
+  direction: rtl;
+}

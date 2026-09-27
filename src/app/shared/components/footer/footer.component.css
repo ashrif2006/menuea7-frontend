@@ -1,0 +1,20 @@
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer {
+  background: var(--color-white);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--color-primary);
+}
+
+.footer p { color: var(--color-text-muted); margin: 8px 0; }
+.copyright { font-size: 0.85rem; }
