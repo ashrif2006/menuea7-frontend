@@ -1,0 +1,15 @@
+.welcome-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-soft);
+}
+
+.welcome-card h1 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.welcome-card p {
+  color: var(--color-text-muted);
+}

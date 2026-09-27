@@ -1,0 +1,37 @@
+<div class="dashboard-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">A7-Menu</div>
+
+<nav class="sidebar-nav">
+  <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <span class="icon">🏠</span>
+    <span class="label">الرئيسية</span>
+  </a>
+  <a routerLink="/dashboard/categories" routerLinkActive="active">
+    <span class="icon">📁</span>
+    <span class="label">التصنيفات</span>
+  </a>
+  <a routerLink="/dashboard/menu-items" routerLinkActive="active">
+    <span class="icon">🍽️</span>
+    <span class="label">الأصناف</span>
+  </a>
+  <a routerLink="/dashboard/qr-code" routerLinkActive="active">
+    <span class="icon">🔗</span>
+    <span class="label">كود QR</span>
+  </a>
+</nav>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-cafe-name">{{ authService.currentUser()?.cafeName }}</div>
+      <button class="btn-logout" (click)="logout()">تسجيل الخروج</button>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

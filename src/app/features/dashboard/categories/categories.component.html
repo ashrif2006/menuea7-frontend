@@ -1,0 +1,72 @@
+<div class="page-header">
+  <h1>التصنيفات</h1>
+  <button class="btn btn-primary" (click)="openCreateModal()">+ إضافة تصنيف</button>
+</div>
+
+@if (categories().length === 0) {
+  <div class="empty-state">
+    <p>لسه معملتش أي تصنيف. ابدأ بإضافة أول تصنيف لمنيوك.</p>
+  </div>
+} @else {
+  <div class="categories-list">
+    @for (category of categories(); track category.id) {
+      <div class="category-row">
+        <div class="category-info">
+          <span class="category-name">{{ category.nameAr }}</span>
+          <span class="category-name-en">{{ category.nameEn }}</span>
+        </div>
+        <span class="badge" [class.badge-active]="category.isActive" [class.badge-inactive]="!category.isActive">
+          {{ category.isActive ? 'مفعّل' : 'موقوف' }}
+        </span>
+        <div class="category-actions">
+          <button class="btn-icon" (click)="openEditModal(category)">✏️</button>
+          <button class="btn-icon" (click)="deleteCategory(category)">🗑️</button>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<!-- Modal -->
+@if (isModalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <h2>{{ editingCategory() ? 'تعديل التصنيف' : 'إضافة تصنيف جديد' }}</h2>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-group">
+          <label>الاسم بالعربي</label>
+          <input type="text" formControlName="nameAr" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label>الاسم بالإنجليزي</label>
+          <input type="text" formControlName="nameEn" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label>ترتيب العرض</label>
+          <input type="number" formControlName="sortOrder" class="form-control" />
+        </div>
+
+        @if (editingCategory()) {
+          <div class="form-check">
+            <input type="checkbox" formControlName="isActive" id="isActive" />
+            <label for="isActive">مفعّل</label>
+          </div>
+        }
+
+        @if (errorMessage()) {
+          <div class="alert-error">{{ errorMessage() }}</div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" (click)="closeModal()">إلغاء</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
+            {{ isSaving() ? 'جاري الحفظ...' : 'حفظ' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
