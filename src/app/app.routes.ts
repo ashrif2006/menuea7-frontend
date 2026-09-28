@@ -8,6 +8,7 @@ import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout/
 import { DashboardHomeComponent } from './features/dashboard/dashboard-home/dashboard-home.component';
 import { authGuard } from './core/guards/auth.guard';
 import { CategoriesComponent } from './features/dashboard/categories/categories.component';
+import { MenuItemsComponent } from './features/dashboard/menu-items/menu-items.component';
 
 export const routes: Routes = [
   {path:'',component:LandingComponent},
@@ -19,7 +20,8 @@ export const routes: Routes = [
     canActivate:[authGuard],
     children:[
       {path:'',component:DashboardHomeComponent},
-      {path:'categories',component:CategoriesComponent}
+      {path:'categories',component:CategoriesComponent},
+      {path:'menu-items',component:MenuItemsComponent},
     ]
   }
 ];
