@@ -9,11 +9,14 @@ import { DashboardHomeComponent } from './features/dashboard/dashboard-home/dash
 import { authGuard } from './core/guards/auth.guard';
 import { CategoriesComponent } from './features/dashboard/categories/categories.component';
 import { MenuItemsComponent } from './features/dashboard/menu-items/menu-items.component';
+import { QrCodeComponent } from './features/dashboard/qr-code/qr-code.component';
+import { PublicMenuComponent } from './features/public-menu/public-menu.component';
 
 export const routes: Routes = [
   {path:'',component:LandingComponent},
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
+  { path: 'menu/:slug', component: PublicMenuComponent },
   {
     path:'dashboard',
     component:DashboardLayoutComponent,
@@ -22,6 +25,7 @@ export const routes: Routes = [
       {path:'',component:DashboardHomeComponent},
       {path:'categories',component:CategoriesComponent},
       {path:'menu-items',component:MenuItemsComponent},
+      { path: 'qr-code', component: QrCodeComponent },
     ]
   }
 ];

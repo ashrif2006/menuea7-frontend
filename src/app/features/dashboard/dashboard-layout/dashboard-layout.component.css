@@ -1,113 +1,134 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  background: var(--color-cream);
+  background: var(--color-morning-fog);
 }
 
-/* ===== Sidebar ===== */
-.sidebar {
-  width: 240px;
-  background: var(--color-white);
-  border-left: 1px solid #EFE7DC;
-  padding: 24px 0;
-  flex-shrink: 0;
-}
+/* مخفي افتراضيًا (موبايل) */
+.sidebar { display: none; }
 
-.sidebar-logo {
-  font-weight: 800;
-  font-size: 1.3rem;
-  color: var(--color-primary);
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 16px;
-}
-
-.sidebar-nav a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  color: var(--color-text-dark);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.sidebar-nav a:hover {
-  background: var(--color-cream-soft);
-}
-
-.sidebar-nav a.active {
-  background: var(--color-primary);
-  color: var(--color-white);
-}
-
-.icon { font-size: 1.1rem; }
-
-/* ===== Main Area ===== */
 .main-area {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .topbar {
-  background: var(--color-white);
-  border-bottom: 1px solid #EFE7DC;
-  padding: 16px 32px;
+  background: var(--color-paper-white);
+  border-bottom: var(--border-sticker-thin);
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .topbar-cafe-name {
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
 }
 
 .btn-logout {
-  background: transparent;
-  border: 1.5px solid #E5DDD3;
-  color: var(--color-text-muted);
-  padding: 8px 18px;
-  border-radius: var(--radius-md);
-  font-family: 'Cairo', sans-serif;
-  font-weight: 500;
+  background: var(--color-oat-cream);
+  border: 1.5px solid var(--color-ink-black);
+  color: var(--color-ink-black);
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8rem;
   cursor: pointer;
-}
-
-.btn-logout:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .content {
   flex: 1;
-  padding: 32px;
+  padding: 16px;
+  padding-bottom: 90px; /* مساحة للـ Bottom Nav */
 }
 
-@media (max-width: 900px) {
+/* ===== Bottom Nav (موبايل) ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  background: var(--color-paper-white);
+  border-top: var(--border-sticker-thin);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  z-index: 100;
+}
+
+.bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.bottom-nav a i { font-size: 1.05rem; }
+
+.bottom-nav a.active {
+  color: var(--color-ink-black);
+  background: var(--color-kofi-blue);
+}
+
+/* ===== Desktop (≥900px): Sidebar بدل Bottom Nav ===== */
+@media (min-width: 900px) {
   .sidebar {
-    width: 80px;
-  }
-
-  .sidebar-nav a {
-    justify-content: center;
-    padding: 12px 8px;
-  }
-
-  .sidebar-nav .label {
-    display: none;
+    display: block;
+    width: 240px;
+    background: var(--color-paper-white);
+    border-left: var(--border-sticker-thin);
+    padding: 24px 16px;
+    flex-shrink: 0;
   }
 
   .sidebar-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-radius: var(--radius-pill);
+    color: var(--color-ink-black);
+    text-decoration: none;
+    font-weight: 600;
     font-size: 0.9rem;
   }
+
+  .sidebar-nav a:hover { background: var(--color-oat-cream); }
+
+  .sidebar-nav a.active {
+    background: var(--color-ink-black);
+    color: var(--color-paper-white);
+  }
+
+  .bottom-nav { display: none; }
+  .content { padding: 28px; padding-bottom: 28px; }
+  .topbar { padding: 16px 28px; }
 }

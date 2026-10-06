@@ -1,30 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --color-primary: #C1602B;
-  --color-primary-dark: #A34E22;
-  --color-cream: #FDF6F0;
-  --color-cream-soft: #FBEEE4;
-  --color-dark: #3D2A20;
-  --color-text-dark: #2B1D14;
-  --color-text-muted: #6B5D53;
-  --color-white: #FFFFFF;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --shadow-soft: 0 4px 20px rgba(43, 29, 20, 0.06);
+  /* ===== Ko-fi inspired tokens ===== */
+  --color-oat-cream: #e9dfd2;
+  --color-morning-fog: #e5e7eb;
+  --color-ink-black: #202020;
+  --color-sticker-black: #000000;
+  --color-paper-white: #ffffff;
+  --color-kofi-blue: #aac9f7;
+  --color-cobalt-pop: #72a4f2;
+  --color-muted: #5c5c5c;
+
+  --font-display: 'Lalezar', 'Bowlby One', cursive;
+  --font-body: 'Cairo', 'DM Sans', sans-serif;
+
+  --radius-pill: 9999px;
+  --radius-card: 40px;
+  --radius-feature: 24px;
+  --radius-sm: 16px;
+
+  --border-sticker: 2.5px solid var(--color-sticker-black);
+  --border-sticker-thin: 2px solid var(--color-sticker-black);
+
+  /* ===== Aliases للصفحات القديمة لحد ما نعيد تصميمها (منع كسر أي Modal زي اللي حصل قبل كده) ===== */
+  --color-primary: var(--color-cobalt-pop);
+  --color-primary-dark: #5a8ad9;
+  --color-cream: var(--color-morning-fog);
+  --color-cream-soft: var(--color-oat-cream);
+  --color-dark: var(--color-ink-black);
+  --color-text-dark: var(--color-ink-black);
+  --color-text-muted: var(--color-muted);
+  --color-white: var(--color-paper-white);
+  --radius-md: var(--radius-sm);
+  --radius-lg: var(--radius-feature);
+  --shadow-soft: none;
 }
 
-* {
-  font-family: 'Cairo', sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background-color: var(--color-cream);
-  color: var(--color-text-dark);
+  font-family: var(--font-body);
+  background-color: var(--color-morning-fog);
+  color: var(--color-ink-black);
   direction: rtl;
 }

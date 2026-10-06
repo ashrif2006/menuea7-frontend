@@ -1,0 +1,239 @@
+.state-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-morning-fog);
+  color: var(--color-muted);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-oat-cream);
+  border-top-color: var(--color-cobalt-pop);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.menu-page {
+  background: var(--color-morning-fog);
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+.menu-header {
+  padding: 20px 16px 16px;
+  text-align: center;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.logo-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: var(--border-sticker-thin);
+  overflow: hidden;
+  background: var(--color-paper-white);
+}
+.logo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+.lang-pill {
+  background: var(--color-ink-black);
+  color: var(--color-paper-white);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.cafe-name {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  margin: 8px 0 0;
+  color: var(--color-ink-black);
+}
+
+/* ===== Category Tabs ===== */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 16px 16px;
+  position: sticky;
+  top: 0;
+  background: var(--color-morning-fog);
+  z-index: 40;
+  scrollbar-width: none;
+}
+.category-tabs::-webkit-scrollbar { display: none; }
+
+.tab-pill {
+  flex-shrink: 0;
+  background: var(--color-paper-white);
+  border: 2px solid transparent;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-ink-black);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tab-pill.active {
+  border-color: var(--color-ink-black);
+  background: var(--color-kofi-blue);
+}
+
+/* ===== Content ===== */
+.menu-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px 16px 48px;
+}
+
+.category-section {
+  margin-bottom: 32px;
+  scroll-margin-top: 110px;
+}
+
+.category-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0 0 14px;
+  color: var(--color-ink-black);
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== Sticker Item Card ===== */
+.menu-item {
+  background: var(--color-paper-white);
+  border: var(--border-sticker-thin);
+  border-radius: var(--radius-feature);
+  display: flex;
+  gap: 14px;
+  padding: 12px;
+}
+
+.item-photo {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  border: var(--border-sticker-thin);
+  overflow: hidden;
+  background: var(--color-oat-cream);
+}
+.item-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink-black);
+  opacity: 0.35;
+  font-size: 1.4rem;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.item-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.item-desc {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price-tag {
+  align-self: flex-start;
+  background: var(--color-oat-cream);
+  border: 1.5px solid var(--color-ink-black);
+  border-radius: var(--radius-pill);
+  padding: 2px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* ===== Footer ===== */
+.menu-footer {
+  text-align: center;
+  padding: 24px 16px 32px;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.menu-footer strong { font-family: var(--font-display); font-size: 1rem; color: var(--color-ink-black); }
+
+/* ===== Variants Container & Chips ===== */
+.variants-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.variant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-oat-cream);
+  border: 1.5px solid var(--color-ink-black);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink-black);
+  white-space: nowrap;
+}
+
+.variant-name {
+  opacity: 0.75;
+}
+
+.variant-price {
+  font-weight: 700;
+}
+
+/* ===== Tablet/Desktop ===== */
+@media (min-width: 640px) {
+  .cafe-name { font-size: 2.6rem; }
+  .item-photo { width: 100px; height: 100px; }
+}

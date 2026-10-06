@@ -1,0 +1,114 @@
+@if (isLoading()) {
+  <div class="state-screen">
+    <div class="spinner"></div>
+  </div>
+} @else if (notFound()) {
+  <div class="state-screen">
+    <p>معرفناش نلاقي المنيو ده 😕</p>
+  </div>
+} @else {
+  @if (menu(); as m) {
+    <div class="menu-page" [dir]="isRtl() ? 'rtl' : 'ltr'">
+      <header class="menu-header">
+        <div class="header-top">
+          @if (m.logoUrl) {
+            <div class="logo-frame">
+              <img [src]="m.logoUrl" [alt]="m.cafeName" />
+            </div>
+          }
+          <button class="lang-pill" (click)="toggleLang()">
+            {{ lang() === "ar" ? "EN" : "AR" }}
+          </button>
+        </div>
+        <h1 class="cafe-name">{{ m.cafeName }}</h1>
+      </header>
+
+      <!-- أزرار اختيار الصنف -->
+      @if (m.categories.length > 1) {
+        <nav class="category-tabs">
+          @for (category of m.categories; track category.id) {
+            <button
+              class="tab-pill"
+              [class.active]="activeCategoryId() === category.id"
+              (click)="selectCategory(category.id)"
+            >
+              {{ name(category) }}
+            </button>
+          }
+        </nav>
+      }
+
+      <main class="menu-content">
+        @for (category of m.categories; track category.id) {
+          <!-- عرض فقط الصنف المحدد حالياً -->
+          @if (activeCategoryId() === category.id) {
+            <section class="category-section">
+              <h2 class="category-title">{{ name(category) }}</h2>
+
+              <div class="items-list">
+                @for (item of category.items; track item.id) {
+                  <article class="menu-item">
+                    <div class="item-photo">
+                      @if (item.imageUrl) {
+                        <img
+                          [src]="item.imageUrl"
+                          [alt]="name(item)"
+                          loading="lazy"
+                        />
+                      } @else {
+                        <div class="photo-placeholder">
+                          <i class="fa-solid fa-mug-saucer"></i>
+                        </div>
+                      }
+                    </div>
+
+                    <div class="item-info">
+                      <h3>{{ name(item) }}</h3>
+                      @if (description(item); as desc) {
+                        <p class="item-desc">{{ desc }}</p>
+                      }
+
+                      <!-- عرض الأحجام المتاحة أو السعر -->
+                      @if (item.variants && item.variants.length > 0) {
+                        <div class="variants-list">
+                          @for (
+                            variant of item.variants;
+                            track variant.nameEn
+                          ) {
+                            <div class="variant-chip">
+                              <span class="variant-name">{{
+                                lang() === "ar"
+                                  ? variant.nameAr
+                                  : variant.nameEn
+                              }}</span>
+                              <span class="variant-price"
+                                >{{ variant.price }}
+                                {{ lang() === "ar" ? "ج.م" : "EGP" }}</span
+                              >
+                            </div>
+                          }
+                        </div>
+                      } @else if (item.price != null) {
+                        <span class="price-tag"
+                          >{{ item.price }}
+                          {{ lang() === "ar" ? "ج.م" : "EGP" }}</span
+                        >
+                      }
+                    </div>
+                  </article>
+                }
+              </div>
+            </section>
+          }
+        }
+      </main>
+
+      <footer class="menu-footer">
+        <span>{{
+          lang() === "ar" ? "صُنع بحب عبر" : "Made with love via"
+        }}</span>
+        <strong>A7-Menu</strong>
+      </footer>
+    </div>
+  }
+}

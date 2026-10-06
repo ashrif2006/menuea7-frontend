@@ -1,6 +1,10 @@
 <div class="page-header">
   <h1>الأصناف</h1>
-  <button class="btn btn-primary" (click)="openCreateModal()" [disabled]="categories().length === 0">
+  <button
+    class="btn btn-primary"
+    (click)="openCreateModal()"
+    [disabled]="categories().length === 0"
+  >
     + إضافة صنف
   </button>
 </div>
@@ -23,7 +27,9 @@
           } @else {
             <div class="no-image"><i class="fa-regular fa-image"></i></div>
           }
-          <span class="item-category">{{ getCategoryName(item.categoryId) }}</span>
+          <span class="item-category">{{
+            getCategoryName(item.categoryId)
+          }}</span>
           @if (!item.isAvailable) {
             <span class="unavailable-tag">غير متاح</span>
           }
@@ -39,16 +45,32 @@
 
         <div class="item-footer">
           <label class="toggle">
-            <input type="checkbox" [checked]="item.isAvailable" (change)="toggleAvailability(item)" />
+            <input
+              type="checkbox"
+              [checked]="item.isAvailable"
+              (change)="toggleAvailability(item)"
+            />
             <span class="toggle-track"></span>
-            <span class="toggle-text">{{ item.isAvailable ? 'متاح' : 'غير متاح' }}</span>
+            <span class="toggle-text">{{
+              item.isAvailable ? "متاح" : "غير متاح"
+            }}</span>
           </label>
 
           <div class="item-actions">
-            <button type="button" class="icon-btn" (click)="openEditModal(item)" aria-label="تعديل">
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="openEditModal(item)"
+              aria-label="تعديل"
+            >
               <i class="fa-solid fa-pen"></i>
             </button>
-            <button type="button" class="icon-btn danger" (click)="deleteItem(item)" aria-label="حذف">
+            <button
+              type="button"
+              class="icon-btn danger"
+              (click)="deleteItem(item)"
+              aria-label="حذف"
+            >
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -62,14 +84,14 @@
 @if (isModalOpen()) {
   <div class="modal-backdrop" (click)="closeModal()">
     <div class="modal-box" (click)="$event.stopPropagation()">
-      <h2>{{ editingItem() ? 'تعديل الصنف' : 'إضافة صنف جديد' }}</h2>
+      <h2>{{ editingItem() ? "تعديل الصنف" : "إضافة صنف جديد" }}</h2>
 
       <form [formGroup]="form" (ngSubmit)="save()">
         <div class="form-group">
           <label>التصنيف</label>
           <select formControlName="categoryId" class="form-control">
             @for (category of categories(); track category.id) {
-              <option [value]="category.id">{{ category.nameAr }}</option>
+              <option [ngValue]="category.id">{{ category.nameAr }}</option>
             }
           </select>
         </div>
@@ -87,23 +109,113 @@
 
         <div class="form-group">
           <label>الوصف (اختياري)</label>
-          <textarea formControlName="descriptionAr" class="form-control" rows="2"></textarea>
+          <textarea
+            formControlName="descriptionAr"
+            class="form-control"
+            rows="2"
+          ></textarea>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>السعر (ج.م)</label>
-            <input type="number" formControlName="price" class="form-control" step="0.5" />
-          </div>
-          <div class="form-group">
-            <label>ترتيب العرض</label>
-            <input type="number" formControlName="sortOrder" class="form-control" />
+        <!-- طريقة التسعير -->
+        <div class="form-group">
+          <label>طريقة التسعير</label>
+          <div class="pricing-mode">
+            <button
+              type="button"
+              class="mode-btn"
+              [class.active]="!useVariants()"
+              (click)="setPricingMode(false)"
+            >
+              سعر واحد
+            </button>
+            <button
+              type="button"
+              class="mode-btn"
+              [class.active]="useVariants()"
+              (click)="setPricingMode(true)"
+            >
+              أحجام مختلفة
+            </button>
           </div>
         </div>
+
+        @if (!useVariants()) {
+          <div class="form-row">
+            <div class="form-group">
+              <label>السعر (ج.م)</label>
+              <input
+                type="number"
+                formControlName="price"
+                class="form-control"
+                step="0.5"
+              />
+            </div>
+            <div class="form-group">
+              <label>ترتيب العرض</label>
+              <input
+                type="number"
+                formControlName="sortOrder"
+                class="form-control"
+              />
+            </div>
+          </div>
+        } @else {
+          <div class="variants-box" formArrayName="variants">
+            @for (variant of variants.controls; track $index) {
+              <div class="variant-row" [formGroupName]="$index">
+                <input
+                  type="text"
+                  formControlName="nameAr"
+                  class="form-control"
+                  placeholder="الحجم (صغير)"
+                />
+                <input
+                  type="text"
+                  formControlName="nameEn"
+                  class="form-control"
+                  placeholder="Size (Small)"
+                />
+                <input
+                  type="number"
+                  formControlName="price"
+                  class="form-control price-input"
+                  placeholder="السعر"
+                  step="0.5"
+                />
+                <button
+                  type="button"
+                  class="icon-btn danger"
+                  (click)="removeVariant($index)"
+                  [disabled]="variants.length === 1"
+                  aria-label="حذف الحجم"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            }
+            <button type="button" class="btn-add-variant" (click)="addVariant()">
+              <i class="fa-solid fa-plus"></i> إضافة حجم
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>ترتيب العرض</label>
+            <input
+              type="number"
+              formControlName="sortOrder"
+              class="form-control"
+            />
+          </div>
+        }
 
         <div class="form-group">
           <label>صورة الصنف (اختياري)</label>
-          <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control" />
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            class="form-control"
+          />
           @if (imagePreviewUrl()) {
             <img [src]="imagePreviewUrl()" class="image-preview" />
           }
@@ -111,7 +223,11 @@
 
         @if (editingItem()) {
           <div class="form-check">
-            <input type="checkbox" formControlName="isAvailable" id="isAvailable" />
+            <input
+              type="checkbox"
+              formControlName="isAvailable"
+              id="isAvailable"
+            />
             <label for="isAvailable">متاح</label>
           </div>
         }
@@ -125,9 +241,11 @@
         }
 
         <div class="modal-actions">
-          <button type="button" class="btn btn-outline" (click)="closeModal()">إلغاء</button>
+          <button type="button" class="btn btn-outline" (click)="closeModal()">
+            إلغاء
+          </button>
           <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
-            {{ isSaving() ? 'جاري الحفظ...' : 'حفظ' }}
+            {{ isSaving() ? "جاري الحفظ..." : "حفظ" }}
           </button>
         </div>
       </form>

@@ -30,6 +30,7 @@ export interface CreateMenuItemRequest {
   descriptionAr?: string;
   descriptionEn?: string;
   price?: number;
+  variants?: MenuItemVariantRequest[]
 }
 
 export interface UpdateMenuItemRequest {
@@ -42,4 +43,11 @@ export interface UpdateMenuItemRequest {
   descriptionAr?: string;
   descriptionEn?: string;
   price?: number;
+  variants?: MenuItemVariantRequest[]
+}
+export interface MenuItemVariantRequest {
+  nameAr: string;
+  nameEn: string;
+  price: number;
+  sortOrder: number;
 }

@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1>كود QR الخاص بمنيوك</h1>
+</div>
+
+<div class="qr-card">
+  @if (isLoading()) {
+    <div class="qr-state">
+      <p>جاري تحميل الكود...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="qr-state">
+      <p class="error-text">{{ errorMessage() }}</p>
+      <button class="btn btn-outline" (click)="loadQrCode()">إعادة المحاولة</button>
+    </div>
+  } @else if (qrImageUrl()) {
+    <img [src]="qrImageUrl()" alt="QR Code" class="qr-image" />
+    <p class="qr-hint">اطبع الكود ده وحطه على طاولات {{ authService.currentUser()?.cafeName }}</p>
+    <button class="btn btn-primary" (click)="download()">
+      <i class="fa-solid fa-download"></i> تحميل الصورة
+    </button>
+  }
+</div>

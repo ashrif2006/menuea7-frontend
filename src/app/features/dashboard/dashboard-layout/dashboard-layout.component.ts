@@ -10,7 +10,8 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
   styleUrl: './dashboard-layout.component.css'
 })
 export class DashboardLayoutComponent {
-  private authService = inject(AuthService);
+  
+  public authService = inject(AuthService);
   private router = inject(Router);
 
   logout(){
