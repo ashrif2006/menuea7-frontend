@@ -1,80 +1,67 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { PublicMenuService } from '../../core/services/public-menu.service';
 import { PublicMenu, PublicMenuItem } from '../../core/models/public-menu.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
-type Lang = 'ar' | 'en';
 
 @Component({
   selector: 'app-public-menu',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './public-menu.component.html',
-  styleUrl: './public-menu.component.css'
+  styleUrls: ['./public-menu.component.css']
 })
 export class PublicMenuComponent implements OnInit {
+  private menuService = inject(PublicMenuService);
+  private route = inject(ActivatedRoute);
+
+  // States
+  isLoading = signal<boolean>(true);
+  notFound = signal<boolean>(false);
   menu = signal<PublicMenu | null>(null);
-  isLoading = signal(true);
-  notFound = signal(false);
-
-  lang = signal<Lang>('ar');
+  
+  lang = signal<'ar' | 'en'>('en');
   activeCategoryId = signal<number | null>(null);
+  searchQuery = signal<string>('');
 
+  // Computed Values
   isRtl = computed(() => this.lang() === 'ar');
 
-  constructor(
-    private route: ActivatedRoute,
-    private publicMenuService: PublicMenuService
-  ) {}
-
   ngOnInit() {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    if (!slug) {
-      this.notFound.set(true);
-      this.isLoading.set(false);
-      return;
-    }
+    // استدعاء الـ API كمثال للـ Slug
+    const slug = this.route.snapshot.paramMap.get('slug')!;
 
-    this.publicMenuService.getMenu(slug).subscribe({
+    this.menuService.getMenu(slug).subscribe({
       next: (data) => {
         this.menu.set(data);
-        this.activeCategoryId.set(data.categories[0]?.id ?? null);
+        if (data.categories?.length > 0) {
+          this.activeCategoryId.set(data.categories[0].id);
+        }
         this.isLoading.set(false);
-        console.log('Menu data:', data); // Log the menu data for debugging
       },
       error: () => {
         this.notFound.set(true);
         this.isLoading.set(false);
       }
     });
+  
   }
 
   toggleLang() {
-    this.lang.set(this.lang() === 'ar' ? 'en' : 'ar');
+    this.lang.update(l => l === 'ar' ? 'en' : 'ar');
   }
 
-  scrollTo(categoryId: number) {
-    this.activeCategoryId.set(categoryId);
-    document.getElementById('cat-' + categoryId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  selectCategory(categoryId: number) {
-    this.activeCategoryId.set(categoryId);
+  selectCategory(id: number) {
+    this.activeCategoryId.set(id);
   }
 
+  // Helpers للغة
   name(entity: { nameAr: string; nameEn: string }): string {
     return this.lang() === 'ar' ? entity.nameAr : entity.nameEn;
   }
 
   description(item: PublicMenuItem): string | null {
     return this.lang() === 'ar' ? item.descriptionAr : item.descriptionEn;
-  }
-
-  displayPrice(item: PublicMenuItem): string {
-    const unit = this.lang() === 'ar' ? 'ج.م' : 'EGP';
-    if (item.variants.length) {
-      const min = Math.min(...item.variants.map(v => v.price));
-      return this.lang() === 'ar' ? `يبدأ من ${min} ${unit}` : `From ${min} ${unit}`;
-    }
-    return item.price != null ? `${item.price} ${unit}` : '';
   }
 }

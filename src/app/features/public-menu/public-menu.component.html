@@ -1,98 +1,117 @@
 @if (isLoading()) {
   <div class="state-screen">
-    <div class="spinner"></div>
+    <div class="luxury-spinner"></div>
   </div>
 } @else if (notFound()) {
   <div class="state-screen">
-    <p>معرفناش نلاقي المنيو ده 😕</p>
+    <div class="error-box">
+      <span class="material-symbols-outlined text-4xl mb-2">error_outline</span>
+      <p>{{ lang() === 'ar' ? 'عذراً، لم نتمكن من العثور على القائمة' : 'Menu not found' }}</p>
+    </div>
   </div>
 } @else {
   @if (menu(); as m) {
-    <div class="menu-page" [dir]="isRtl() ? 'rtl' : 'ltr'">
+    <div class="menu-page" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
+      <!-- Ambient Glows Background -->
+      <div class="ambient-glows">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+      </div>
+
+      <!-- Header Top Bar -->
       <header class="menu-header">
-        <div class="header-top">
-          @if (m.logoUrl) {
-            <div class="logo-frame">
-              <img [src]="m.logoUrl" [alt]="m.cafeName" />
+        <div class="header-content">
+          <div class="brand-info">
+            @if (m.logoUrl) {
+              <img [src]="m.logoUrl" [alt]="m.cafeName" class="cafe-logo" />
+            }
+            <div class="title-group">
+              <h1 class="cafe-name">{{ m.cafeName }}</h1>
+
             </div>
-          }
-          <button class="lang-pill" (click)="toggleLang()">
-            {{ lang() === "ar" ? "EN" : "AR" }}
+          </div>
+
+          <button class="lang-toggle-btn" (click)="toggleLang()">
+            <span class="material-symbols-outlined text-sm">translate</span>
+            <span>{{ lang() === 'ar' ? 'English' : 'العربية' }}</span>
           </button>
         </div>
-        <h1 class="cafe-name">{{ m.cafeName }}</h1>
       </header>
 
-      <!-- أزرار اختيار الصنف -->
-      @if (m.categories.length > 1) {
-        <nav class="category-tabs">
-          @for (category of m.categories; track category.id) {
-            <button
-              class="tab-pill"
-              [class.active]="activeCategoryId() === category.id"
-              (click)="selectCategory(category.id)"
-            >
-              {{ name(category) }}
-            </button>
-          }
+      <!-- Category Tabs Nav -->
+      @if (m.categories.length > 0) {
+        <nav class="category-tabs-wrapper">
+          <div class="category-tabs">
+            @for (category of m.categories; track category.id) {
+              <button
+                class="tab-pill"
+                [class.active]="activeCategoryId() === category.id"
+                (click)="selectCategory(category.id)"
+              >
+                <span>{{ name(category) }}</span>
+              </button>
+            }
+          </div>
         </nav>
       }
 
+      <!-- Main Content Area -->
       <main class="menu-content">
         @for (category of m.categories; track category.id) {
-          <!-- عرض فقط الصنف المحدد حالياً -->
           @if (activeCategoryId() === category.id) {
             <section class="category-section">
-              <h2 class="category-title">{{ name(category) }}</h2>
+              <div class="section-header">
+                <div class="accent-line"></div>
+                <h2 class="category-title">{{ name(category) }}</h2>
+                <span class="item-count">{{ category.items.length }} {{ lang() === 'ar' ? 'أصناف' : 'items' }}</span>
+              </div>
 
-              <div class="items-list">
+              <div class="items-grid">
                 @for (item of category.items; track item.id) {
-                  <article class="menu-item">
-                    <div class="item-photo">
-                      @if (item.imageUrl) {
-                        <img
-                          [src]="item.imageUrl"
-                          [alt]="name(item)"
-                          loading="lazy"
-                        />
-                      } @else {
-                        <div class="photo-placeholder">
-                          <i class="fa-solid fa-mug-saucer"></i>
-                        </div>
-                      }
-                    </div>
+                  <article class="luxury-card">
+                    <!-- Image Block (If available) -->
+                    @if (item.imageUrl) {
+                      <div class="card-image-container">
+                        <img [src]="item.imageUrl" [alt]="name(item)" loading="lazy" />
+                        <div class="image-overlay"></div>
+                      </div>
+                    }
 
-                    <div class="item-info">
-                      <h3>{{ name(item) }}</h3>
+                    <!-- Details Block -->
+                    <div class="card-details">
+                      <div class="card-header-row">
+                        <h3 class="item-title">{{ name(item) }}</h3>
+                        
+                        @if (item.price != null && (!item.variants || item.variants.length === 0)) {
+                          <span class="main-price">
+                            {{ item.price }} <small>{{ lang() === 'ar' ? 'ر.س' : 'SAR' }}</small>
+                          </span>
+                        }
+                      </div>
+
                       @if (description(item); as desc) {
-                        <p class="item-desc">{{ desc }}</p>
+                        <p class="item-description">{{ desc }}</p>
                       }
 
-                      <!-- عرض الأحجام المتاحة أو السعر -->
+                      <!-- Variants Selector/List -->
                       @if (item.variants && item.variants.length > 0) {
-                        <div class="variants-list">
-                          @for (
-                            variant of item.variants;
-                            track variant.nameEn
-                          ) {
-                            <div class="variant-chip">
-                              <span class="variant-name">{{
-                                lang() === "ar"
-                                  ? variant.nameAr
-                                  : variant.nameEn
-                              }}</span>
-                              <span class="variant-price"
-                                >{{ variant.price }}
-                                {{ lang() === "ar" ? "ج.م" : "EGP" }}</span
-                              >
-                            </div>
-                          }
+                        <div class="variants-wrapper">
+                          <span class="variants-label">
+                            {{ lang() === 'ar' ? 'خيارات التحضير' : 'Extraction Methods' }}
+                          </span>
+                          <div class="variants-grid">
+                            @for (variant of item.variants; track variant.nameEn) {
+                              <div class="variant-item">
+                                <span class="v-name">
+                                  {{ lang() === 'ar' ? variant.nameAr : variant.nameEn }}
+                                </span>
+                                <span class="v-price">
+                                  {{ variant.price }} {{ lang() === 'ar' ? 'ر.س' : 'SAR' }}
+                                </span>
+                              </div>
+                            }
+                          </div>
                         </div>
-                      } @else if (item.price != null) {
-                        <span class="price-tag"
-                          >{{ item.price }}
-                          {{ lang() === "ar" ? "ج.م" : "EGP" }}</span
-                        >
                       }
                     </div>
                   </article>
@@ -103,11 +122,10 @@
         }
       </main>
 
+      <!-- Footer -->
       <footer class="menu-footer">
-        <span>{{
-          lang() === "ar" ? "صُنع بحب عبر" : "Made with love via"
-        }}</span>
-        <strong>A7-Menu</strong>
+        <span>{{ lang() === 'ar' ? 'صُنع بحب عبر' : 'Crafted with elegance via' }}</span>
+        <strong class="brand-signature">A7-Menu Reserve</strong>
       </footer>
     </div>
   }
