@@ -1,60 +1,57 @@
-<div class="dashboard-wrapper">
-  <!-- Sidebar (desktop فقط) -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">A7-Menu</div>
+<div class="dash-shell">
+  <!-- Ambient glow زي صفحة المنيو -->
+  <div class="ambient-glow"></div>
 
-    <nav class="sidebar-nav">
-      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+  <!-- Top identity bar -->
+  <header class="dash-topbar">
+    <div class="brand-mark">
+      <span class="brand-dot"></span>
+      <span>{{ authService.currentUser()?.cafeName }}</span>
+    </div>
+    <button class="logout-chip" (click)="logout()">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </button>
+  </header>
+
+  <div class="dash-body">
+    <!-- Icon rail (desktop فقط) -->
+    <aside class="icon-rail">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="الرئيسية">
         <i class="fa-solid fa-house"></i>
-        <span>الرئيسية</span>
       </a>
-      <a routerLink="/dashboard/categories" routerLinkActive="active">
-        <i class="fa-solid fa-folder"></i>
-        <span>التصنيفات</span>
+      <a routerLink="/dashboard/categories" routerLinkActive="active" title="التصنيفات">
+        <i class="fa-solid fa-layer-group"></i>
       </a>
-      <a routerLink="/dashboard/menu-items" routerLinkActive="active">
-        <i class="fa-solid fa-utensils"></i>
-        <span>الأصناف</span>
+      <a routerLink="/dashboard/menu-items" routerLinkActive="active" title="الأصناف">
+        <i class="fa-solid fa-mug-saucer"></i>
       </a>
-      <a routerLink="/dashboard/qr-code" routerLinkActive="active">
+      <a routerLink="/dashboard/qr-code" routerLinkActive="active" title="كود QR">
         <i class="fa-solid fa-qrcode"></i>
-        <span>كود QR</span>
       </a>
-    </nav>
-  </aside>
+    </aside>
 
-  <!-- Main -->
-  <div class="main-area">
-    <header class="topbar">
-      <div class="topbar-cafe-name">{{ authService.currentUser()?.cafeName }}</div>
-      <button class="btn-logout" (click)="logout()">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <span>خروج</span>
-      </button>
-    </header>
-
-    <main class="content">
+    <main class="dash-content">
       <router-outlet></router-outlet>
     </main>
-
-    <!-- Bottom Nav (موبايل فقط) -->
-    <nav class="bottom-nav">
-      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <i class="fa-solid fa-house"></i>
-        <span>الرئيسية</span>
-      </a>
-      <a routerLink="/dashboard/categories" routerLinkActive="active">
-        <i class="fa-solid fa-folder"></i>
-        <span>التصنيفات</span>
-      </a>
-      <a routerLink="/dashboard/menu-items" routerLinkActive="active">
-        <i class="fa-solid fa-utensils"></i>
-        <span>الأصناف</span>
-      </a>
-      <a routerLink="/dashboard/qr-code" routerLinkActive="active">
-        <i class="fa-solid fa-qrcode"></i>
-        <span>QR</span>
-      </a>
-    </nav>
   </div>
+
+  <!-- Floating tab bar (موبايل فقط) -->
+  <nav class="tab-bar">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="fa-solid fa-house"></i>
+      <span>الرئيسية</span>
+    </a>
+    <a routerLink="/dashboard/categories" routerLinkActive="active">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>تصنيفات</span>
+    </a>
+    <a routerLink="/dashboard/menu-items" routerLinkActive="active">
+      <i class="fa-solid fa-mug-saucer"></i>
+      <span>أصناف</span>
+    </a>
+    <a routerLink="/dashboard/qr-code" routerLinkActive="active">
+      <i class="fa-solid fa-qrcode"></i>
+      <span>QR</span>
+    </a>
+  </nav>
 </div>
