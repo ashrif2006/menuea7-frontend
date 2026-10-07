@@ -5,14 +5,13 @@
 } @else if (notFound()) {
   <div class="state-screen">
     <div class="error-box">
-      <span class="material-symbols-outlined text-4xl mb-2">error_outline</span>
       <p>{{ lang() === 'ar' ? 'عذراً، لم نتمكن من العثور على القائمة' : 'Menu not found' }}</p>
     </div>
   </div>
 } @else {
   @if (menu(); as m) {
     <div class="menu-page" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
-      <!-- Ambient Glows Background -->
+      <!-- Ambient Glows -->
       <div class="ambient-glows">
         <div class="glow glow-1"></div>
         <div class="glow glow-2"></div>
@@ -27,13 +26,16 @@
             }
             <div class="title-group">
               <h1 class="cafe-name">{{ m.cafeName }}</h1>
-
+              <span class="table-badge">
+                <span class="pulse-dot"></span>
+                {{ lang() === 'ar' ? 'المنيو العام' : 'Public Menu' }}
+              </span>
             </div>
           </div>
 
           <button class="lang-toggle-btn" (click)="toggleLang()">
             <span class="material-symbols-outlined text-sm">translate</span>
-            <span>{{ lang() === 'ar' ? 'English' : 'العربية' }}</span>
+            <span>{{ lang() === 'ar' ? 'EN' : 'عربي' }}</span>
           </button>
         </div>
       </header>
@@ -66,53 +68,49 @@
                 <span class="item-count">{{ category.items.length }} {{ lang() === 'ar' ? 'أصناف' : 'items' }}</span>
               </div>
 
+              <!-- Compact Responsive Grid -->
               <div class="items-grid">
                 @for (item of category.items; track item.id) {
-                  <article class="luxury-card">
-                    <!-- Image Block (If available) -->
-                    @if (item.imageUrl) {
-                      <div class="card-image-container">
+                  <article class="compact-card">
+                    <!-- Image Box (Compact) -->
+                    <div class="card-photo-wrapper">
+                      @if (item.imageUrl) {
                         <img [src]="item.imageUrl" [alt]="name(item)" loading="lazy" />
-                        <div class="image-overlay"></div>
-                      </div>
-                    }
+                      } @else {
+                        <div class="photo-placeholder">
+                          <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                      }
+                    </div>
 
-                    <!-- Details Block -->
-                    <div class="card-details">
-                      <div class="card-header-row">
-                        <h3 class="item-title">{{ name(item) }}</h3>
+                    <!-- Details Box -->
+                    <div class="card-body">
+                      <div class="card-main-info">
+                        <h3 class="item-title" [title]="name(item)">{{ name(item) }}</h3>
                         
-                        @if (item.price != null && (!item.variants || item.variants.length === 0)) {
-                          <span class="main-price">
-                            {{ item.price }} <small>{{ lang() === 'ar' ? 'ر.س' : 'SAR' }}</small>
-                          </span>
+                        @if (description(item); as desc) {
+                          <p class="item-description">{{ desc }}</p>
                         }
                       </div>
 
-                      @if (description(item); as desc) {
-                        <p class="item-description">{{ desc }}</p>
-                      }
-
-                      <!-- Variants Selector/List -->
-                      @if (item.variants && item.variants.length > 0) {
-                        <div class="variants-wrapper">
-                          <span class="variants-label">
-                            {{ lang() === 'ar' ? 'خيارات التحضير' : 'Extraction Methods' }}
-                          </span>
-                          <div class="variants-grid">
+                      <!-- Price or Variants Footer -->
+                      <div class="card-footer-info">
+                        @if (item.variants && item.variants.length > 0) {
+                          <div class="mini-variants-list">
                             @for (variant of item.variants; track variant.nameEn) {
-                              <div class="variant-item">
-                                <span class="v-name">
-                                  {{ lang() === 'ar' ? variant.nameAr : variant.nameEn }}
-                                </span>
-                                <span class="v-price">
-                                  {{ variant.price }} {{ lang() === 'ar' ? 'ر.س' : 'SAR' }}
-                                </span>
+                              <div class="mini-variant-chip">
+                                <span class="v-name">{{ lang() === 'ar' ? variant.nameAr : variant.nameEn }}</span>
+                                <span class="v-price">{{ variant.price }}</span>
                               </div>
                             }
                           </div>
-                        </div>
-                      }
+                        } @else if (item.price != null) {
+                          <div class="single-price-tag">
+                            <span>{{ item.price }}</span>
+                            <small>{{ lang() === 'ar' ? 'ج.م' : 'EGP' }}</small>
+                          </div>
+                        }
+                      </div>
                     </div>
                   </article>
                 }
@@ -124,8 +122,8 @@
 
       <!-- Footer -->
       <footer class="menu-footer">
-        <span>{{ lang() === 'ar' ? 'صُنع بحب عبر' : 'Crafted with elegance via' }}</span>
-        <strong class="brand-signature">A7-Menu Reserve</strong>
+        <span>{{ lang() === 'ar' ? ' صُنع بحب عبر' : 'Powered by ' }}</span>
+        <strong class="brand-signature"> A7-Menu </strong>
       </footer>
     </div>
   }

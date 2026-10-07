@@ -1,39 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* ===== Ko-fi inspired tokens ===== */
-  --color-oat-cream: #e9dfd2;
-  --color-morning-fog: #e5e7eb;
-  --color-ink-black: #202020;
-  --color-sticker-black: #000000;
-  --color-paper-white: #ffffff;
-  --color-kofi-blue: #aac9f7;
-  --color-cobalt-pop: #72a4f2;
-  --color-muted: #5c5c5c;
+  /* ===== Core palette (من Public Menu) ===== */
+  --bg-dark: #0f0f11;
+  --surface-card: rgba(26, 26, 29, 0.85);
+  --surface-high: #222226;
+  --primary-gold: #f2be8c;
+  --text-main: #f0edee;
+  --text-muted: #a19a95;
 
-  --font-display: 'Lalezar', 'Bowlby One', cursive;
-  --font-body: 'Cairo', 'DM Sans', sans-serif;
+  --font-en: 'Plus Jakarta Sans', sans-serif;
+  --font-ar: 'Cairo', sans-serif;
+  --font-body: var(--font-ar);
 
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
   --radius-pill: 9999px;
-  --radius-card: 40px;
-  --radius-feature: 24px;
-  --radius-sm: 16px;
 
-  --border-sticker: 2.5px solid var(--color-sticker-black);
-  --border-sticker-thin: 2px solid var(--color-sticker-black);
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.06);
+  --border-gold: 1px solid rgba(242, 190, 140, 0.3);
+  --shadow-soft: 0 8px 28px rgba(0, 0, 0, 0.35);
 
-  /* ===== Aliases للصفحات القديمة لحد ما نعيد تصميمها (منع كسر أي Modal زي اللي حصل قبل كده) ===== */
-  --color-primary: var(--color-cobalt-pop);
-  --color-primary-dark: #5a8ad9;
-  --color-cream: var(--color-morning-fog);
-  --color-cream-soft: var(--color-oat-cream);
-  --color-dark: var(--color-ink-black);
-  --color-text-dark: var(--color-ink-black);
-  --color-text-muted: var(--color-muted);
-  --color-white: var(--color-paper-white);
-  --radius-md: var(--radius-sm);
-  --radius-lg: var(--radius-feature);
-  --shadow-soft: none;
+  /* ===== Aliases عشان الصفحات القديمة (Categories, MenuItems, Login...) تفضل شغالة بصريًا لحد ما نوصلها بالريستايل ===== */
+  --color-primary: var(--primary-gold);
+  --color-primary-dark: #d9a06a;
+  --color-cream: var(--bg-dark);
+  --color-cream-soft: var(--surface-high);
+  --color-dark: var(--bg-dark);
+  --color-text-dark: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-white: var(--surface-card);
 }
 
 * { box-sizing: border-box; }
@@ -42,7 +39,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: var(--font-body);
-  background-color: var(--color-morning-fog);
-  color: var(--color-ink-black);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   direction: rtl;
 }
