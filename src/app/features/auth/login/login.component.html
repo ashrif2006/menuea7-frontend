@@ -1,6 +1,12 @@
 <div class="auth-page">
+  <div class="ambient-glow"></div>
+
   <div class="auth-card">
-    <div class="auth-logo">A7-Menu</div>
+    <div class="auth-logo">
+      <span class="logo-dot"></span>
+      A7-Menu
+    </div>
+
     <h1>تسجيل الدخول</h1>
     <p class="auth-subtitle">أدخل بياناتك للوصول للوحة التحكم</p>
 
@@ -44,11 +50,7 @@
       }
 
       <button type="submit" class="btn btn-primary btn-block" [disabled]="isLoading()">
-        @if (isLoading()) {
-          جاري تسجيل الدخول...
-        } @else {
-          تسجيل الدخول
-        }
+        {{ isLoading() ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول' }}
       </button>
     </form>
 

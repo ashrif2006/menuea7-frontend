@@ -1,6 +1,12 @@
 <div class="auth-page">
+  <div class="ambient-glow"></div>
+
   <div class="auth-card">
-    <div class="auth-logo">A7-Menu</div>
+    <div class="auth-logo">
+      <span class="logo-dot"></span>
+      A7-Menu
+    </div>
+
     <h1>إنشاء حساب جديد</h1>
     <p class="auth-subtitle">أنشئ منيو كافيهك الرقمي في دقائق</p>
 
@@ -69,11 +75,7 @@
       }
 
       <button type="submit" class="btn btn-primary btn-block" [disabled]="isLoading()">
-        @if (isLoading()) {
-          جاري إنشاء الحساب...
-        } @else {
-          إنشاء الحساب
-        }
+        {{ isLoading() ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب' }}
       </button>
     </form>
 

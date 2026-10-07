@@ -1,4 +1,44 @@
-<div class="welcome-card">
-  <h1>أهلًا بيك، {{ authService.currentUser()?.fullName }} 👋</h1>
-  <p>من هنا تقدر تدير منيو <strong>{{ authService.currentUser()?.cafeName }}</strong> بسهولة.</p>
+<div class="home-head">
+  <h1>أهلًا بيك 👋</h1>
+  <p class="home-sub">نظرة سريعة على منيو {{ authService.currentUser()?.cafeName }}</p>
 </div>
+
+@if (hasNoContentYet()) {
+  <div class="onboarding-card">
+    <i class="fa-solid fa-mug-saucer"></i>
+    <h2>ابدأ بإضافة أول تصنيف</h2>
+    <p>منيوك لسه فاضي. ضيف تصنيف الأول زي "مشروبات ساخنة"، وبعدين ضيف أصنافك.</p>
+    <a routerLink="/dashboard/categories" class="btn btn-primary">إضافة تصنيف</a>
+  </div>
+} @else {
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fa-solid fa-layer-group"></i>
+      <span class="stat-value">{{ categoriesCount() }}</span>
+      <span class="stat-label">تصنيف</span>
+    </div>
+    <div class="stat-card">
+      <i class="fa-solid fa-mug-saucer"></i>
+      <span class="stat-value">{{ itemsCount() }}</span>
+      <span class="stat-label">صنف</span>
+    </div>
+    <div class="stat-card accent">
+      <i class="fa-solid fa-circle-check"></i>
+      <span class="stat-value">{{ availableCount() }}</span>
+      <span class="stat-label">متاح الآن</span>
+    </div>
+  </div>
+
+  <div class="quick-links">
+    <a routerLink="/dashboard/menu-items" class="quick-link">
+      <i class="fa-solid fa-plus"></i>
+      <span>إضافة صنف جديد</span>
+      <i class="fa-solid fa-chevron-left arrow"></i>
+    </a>
+    <a routerLink="/dashboard/qr-code" class="quick-link">
+      <i class="fa-solid fa-qrcode"></i>
+      <span>عرض وطباعة كود QR</span>
+      <i class="fa-solid fa-chevron-left arrow"></i>
+    </a>
+  </div>
+}

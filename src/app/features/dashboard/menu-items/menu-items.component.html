@@ -1,78 +1,67 @@
-<div class="page-header">
-  <h1>الأصناف</h1>
-  <button
-    class="btn btn-primary"
-    (click)="openCreateModal()"
-    [disabled]="categories().length === 0"
-  >
-    + إضافة صنف
+<div class="page-head">
+  <div>
+    <h1>الأصناف</h1>
+    <p class="page-sub">أضف منتجاتك بأسعارها وصورها</p>
+  </div>
+  <button class="fab-add" (click)="openCreateModal()" [disabled]="categories().length === 0">
+    <i class="fa-solid fa-plus"></i>
+    <span>صنف جديد</span>
   </button>
 </div>
 
 @if (categories().length === 0) {
   <div class="empty-state">
+    <i class="fa-solid fa-layer-group"></i>
     <p>لازم تضيف تصنيف واحد على الأقل قبل ما تضيف أصناف.</p>
   </div>
 } @else if (menuItems().length === 0) {
   <div class="empty-state">
+    <i class="fa-solid fa-mug-saucer"></i>
     <p>لسه معملتش أي صنف. ابدأ بإضافة أول صنف لمنيوك.</p>
   </div>
 } @else {
   <div class="items-grid">
     @for (item of menuItems(); track item.id) {
-      <article class="item-card" [class.is-unavailable]="!item.isAvailable">
-        <div class="item-media">
+      <article class="compact-card" [class.is-off]="!item.isAvailable">
+        <div class="card-photo-wrapper">
           @if (item.imageUrl) {
             <img [src]="item.imageUrl" [alt]="item.nameAr" loading="lazy" />
           } @else {
-            <div class="no-image"><i class="fa-regular fa-image"></i></div>
+            <div class="photo-placeholder"><i class="fa-solid fa-mug-hot"></i></div>
           }
-          <span class="item-category">{{
-            getCategoryName(item.categoryId)
-          }}</span>
-          @if (!item.isAvailable) {
-            <span class="unavailable-tag">غير متاح</span>
-          }
-        </div>
 
-        <div class="item-body">
-          <div class="item-titles">
-            <h3>{{ item.nameAr }}</h3>
-            <p>{{ item.nameEn }}</p>
-          </div>
-          <div class="item-price">{{ getDisplayPrice(item) }}</div>
-        </div>
+          <span class="category-chip">{{ getCategoryName(item.categoryId) }}</span>
 
-        <div class="item-footer">
-          <label class="toggle">
-            <input
-              type="checkbox"
-              [checked]="item.isAvailable"
-              (change)="toggleAvailability(item)"
-            />
-            <span class="toggle-track"></span>
-            <span class="toggle-text">{{
-              item.isAvailable ? "متاح" : "غير متاح"
-            }}</span>
-          </label>
-
-          <div class="item-actions">
-            <button
-              type="button"
-              class="icon-btn"
-              (click)="openEditModal(item)"
-              aria-label="تعديل"
-            >
+          <div class="card-controls">
+            <button type="button" class="ctrl-btn" (click)="openEditModal(item)" aria-label="تعديل">
               <i class="fa-solid fa-pen"></i>
             </button>
-            <button
-              type="button"
-              class="icon-btn danger"
-              (click)="deleteItem(item)"
-              aria-label="حذف"
-            >
+            <button type="button" class="ctrl-btn danger" (click)="deleteItem(item)" aria-label="حذف">
               <i class="fa-solid fa-trash"></i>
             </button>
+          </div>
+
+          @if (!item.isAvailable) {
+            <span class="unavailable-badge">غير متاح</span>
+          }
+        </div>
+
+        <div class="card-body">
+          <div class="card-main-info">
+            <h3 class="item-title" [title]="item.nameAr">{{ item.nameAr }}</h3>
+            <p class="item-name-en">{{ item.nameEn }}</p>
+          </div>
+
+          <div class="card-footer-info">
+            <div class="single-price-tag">
+              <span>{{ getDisplayPrice(item) }}</span>
+              <small>ج.م</small>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" [checked]="item.isAvailable" (change)="toggleAvailability(item)" />
+              <span class="toggle-track"></span>
+            </label>
           </div>
         </div>
       </article>
@@ -84,7 +73,7 @@
 @if (isModalOpen()) {
   <div class="modal-backdrop" (click)="closeModal()">
     <div class="modal-box" (click)="$event.stopPropagation()">
-      <h2>{{ editingItem() ? "تعديل الصنف" : "إضافة صنف جديد" }}</h2>
+      <h2>{{ editingItem() ? 'تعديل الصنف' : 'إضافة صنف جديد' }}</h2>
 
       <form [formGroup]="form" (ngSubmit)="save()">
         <div class="form-group">
@@ -109,31 +98,16 @@
 
         <div class="form-group">
           <label>الوصف (اختياري)</label>
-          <textarea
-            formControlName="descriptionAr"
-            class="form-control"
-            rows="2"
-          ></textarea>
+          <textarea formControlName="descriptionAr" class="form-control" rows="2"></textarea>
         </div>
 
-        <!-- طريقة التسعير -->
         <div class="form-group">
           <label>طريقة التسعير</label>
           <div class="pricing-mode">
-            <button
-              type="button"
-              class="mode-btn"
-              [class.active]="!useVariants()"
-              (click)="setPricingMode(false)"
-            >
+            <button type="button" class="mode-btn" [class.active]="!useVariants()" (click)="setPricingMode(false)">
               سعر واحد
             </button>
-            <button
-              type="button"
-              class="mode-btn"
-              [class.active]="useVariants()"
-              (click)="setPricingMode(true)"
-            >
+            <button type="button" class="mode-btn" [class.active]="useVariants()" (click)="setPricingMode(true)">
               أحجام مختلفة
             </button>
           </div>
@@ -143,52 +117,22 @@
           <div class="form-row">
             <div class="form-group">
               <label>السعر (ج.م)</label>
-              <input
-                type="number"
-                formControlName="price"
-                class="form-control"
-                step="0.5"
-              />
+              <input type="number" formControlName="price" class="form-control" step="0.5" />
             </div>
             <div class="form-group">
               <label>ترتيب العرض</label>
-              <input
-                type="number"
-                formControlName="sortOrder"
-                class="form-control"
-              />
+              <input type="number" formControlName="sortOrder" class="form-control" />
             </div>
           </div>
         } @else {
           <div class="variants-box" formArrayName="variants">
             @for (variant of variants.controls; track $index) {
               <div class="variant-row" [formGroupName]="$index">
-                <input
-                  type="text"
-                  formControlName="nameAr"
-                  class="form-control"
-                  placeholder="الحجم (صغير)"
-                />
-                <input
-                  type="text"
-                  formControlName="nameEn"
-                  class="form-control"
-                  placeholder="Size (Small)"
-                />
-                <input
-                  type="number"
-                  formControlName="price"
-                  class="form-control price-input"
-                  placeholder="السعر"
-                  step="0.5"
-                />
-                <button
-                  type="button"
-                  class="icon-btn danger"
-                  (click)="removeVariant($index)"
-                  [disabled]="variants.length === 1"
-                  aria-label="حذف الحجم"
-                >
+                <input type="text" formControlName="nameAr" class="form-control" placeholder="الحجم (صغير)" />
+                <input type="text" formControlName="nameEn" class="form-control" placeholder="Size" />
+                <input type="number" formControlName="price" class="form-control price-input" placeholder="السعر" step="0.5" />
+                <button type="button" class="icon-btn danger" (click)="removeVariant($index)"
+                        [disabled]="variants.length === 1" aria-label="حذف الحجم">
                   <i class="fa-solid fa-xmark"></i>
                 </button>
               </div>
@@ -200,36 +144,26 @@
 
           <div class="form-group">
             <label>ترتيب العرض</label>
-            <input
-              type="number"
-              formControlName="sortOrder"
-              class="form-control"
-            />
+            <input type="number" formControlName="sortOrder" class="form-control" />
           </div>
         }
 
         <div class="form-group">
           <label>صورة الصنف (اختياري)</label>
-          <input
-            type="file"
-            accept="image/*"
-            (change)="onFileSelected($event)"
-            class="form-control"
-          />
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control" />
           @if (imagePreviewUrl()) {
             <img [src]="imagePreviewUrl()" class="image-preview" />
           }
         </div>
 
         @if (editingItem()) {
-          <div class="form-check">
-            <input
-              type="checkbox"
-              formControlName="isAvailable"
-              id="isAvailable"
-            />
-            <label for="isAvailable">متاح</label>
-          </div>
+          <label class="switch-row">
+            <span>متاح</span>
+            <span class="switch">
+              <input type="checkbox" formControlName="isAvailable" />
+              <span class="switch-track"></span>
+            </span>
+          </label>
         }
 
         @if (errorMessage()) {
@@ -241,11 +175,9 @@
         }
 
         <div class="modal-actions">
-          <button type="button" class="btn btn-outline" (click)="closeModal()">
-            إلغاء
-          </button>
+          <button type="button" class="btn btn-ghost" (click)="closeModal()">إلغاء</button>
           <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
-            {{ isSaving() ? "جاري الحفظ..." : "حفظ" }}
+            {{ isSaving() ? 'جاري الحفظ...' : 'حفظ' }}
           </button>
         </div>
       </form>
