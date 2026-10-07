@@ -1,26 +1,41 @@
-<div class="page-header">
-  <h1>التصنيفات</h1>
-  <button class="btn btn-primary" (click)="openCreateModal()">+ إضافة تصنيف</button>
+<div class="page-head">
+  <div>
+    <h1>التصنيفات</h1>
+    <p class="page-sub">نظّم منيوك في أقسام واضحة لعميلك</p>
+  </div>
+  <button class="fab-add" (click)="openCreateModal()">
+    <i class="fa-solid fa-plus"></i>
+    <span>تصنيف جديد</span>
+  </button>
 </div>
 
 @if (categories().length === 0) {
   <div class="empty-state">
+    <i class="fa-solid fa-layer-group"></i>
     <p>لسه معملتش أي تصنيف. ابدأ بإضافة أول تصنيف لمنيوك.</p>
   </div>
 } @else {
   <div class="categories-list">
     @for (category of categories(); track category.id) {
-      <div class="category-row">
+      <div class="category-row" [class.is-off]="!category.isActive">
+        <div class="row-status" [class.on]="category.isActive"></div>
+
         <div class="category-info">
           <span class="category-name">{{ category.nameAr }}</span>
           <span class="category-name-en">{{ category.nameEn }}</span>
         </div>
-        <span class="badge" [class.badge-active]="category.isActive" [class.badge-inactive]="!category.isActive">
+
+        <span class="status-chip" [class.chip-on]="category.isActive">
           {{ category.isActive ? 'مفعّل' : 'موقوف' }}
         </span>
+
         <div class="category-actions">
-          <button class="btn-icon" (click)="openEditModal(category)">✏️</button>
-          <button class="btn-icon" (click)="deleteCategory(category)">🗑️</button>
+          <button class="icon-btn" (click)="openEditModal(category)" aria-label="تعديل">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="icon-btn danger" (click)="deleteCategory(category)" aria-label="حذف">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </div>
       </div>
     }
@@ -50,10 +65,13 @@
         </div>
 
         @if (editingCategory()) {
-          <div class="form-check">
-            <input type="checkbox" formControlName="isActive" id="isActive" />
-            <label for="isActive">مفعّل</label>
-          </div>
+          <label class="switch-row">
+            <span>مفعّل</span>
+            <span class="switch">
+              <input type="checkbox" formControlName="isActive" />
+              <span class="switch-track"></span>
+            </span>
+          </label>
         }
 
         @if (errorMessage()) {
@@ -61,7 +79,7 @@
         }
 
         <div class="modal-actions">
-          <button type="button" class="btn btn-outline" (click)="closeModal()">إلغاء</button>
+          <button type="button" class="btn btn-ghost" (click)="closeModal()">إلغاء</button>
           <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
             {{ isSaving() ? 'جاري الحفظ...' : 'حفظ' }}
           </button>
