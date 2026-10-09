@@ -1,0 +1,67 @@
+<div class="journey">
+  <!-- Phone frame ثابت -->
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+
+    <div class="phone-screen">
+      <!-- Stage 1: Build Menu -->
+      <div class="stage" [class.active]="activeStep === 'build'">
+        <div class="stage-header">☕ منيو كافيهك</div>
+        <div class="building-list">
+          @for (item of menuItems; track item.name; let i = $index) {
+            <div class="building-row" [class.shown]="i < visibleItems()">
+              <span>{{ item.name }}</span>
+              <span class="price">{{ item.price }} ج.م</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Stage 2: QR Generating -->
+      <div class="stage" [class.active]="activeStep === 'qr'">
+        <div class="stage-header">كود QR جاهز</div>
+        <div class="qr-wrap">
+          <div class="qr-box"></div>
+        </div>
+        <p class="stage-hint">اطبعه وحطه على الطاولة</p>
+      </div>
+
+      <!-- Stage 3: Customer Scanning -->
+      <div class="stage" [class.active]="activeStep === 'scan'">
+        <div class="stage-header">عميلك بيمسح الكود</div>
+        <div class="qr-wrap scanning">
+          <div class="qr-box small"></div>
+          <div class="scan-line"></div>
+        </div>
+        <p class="stage-hint">بكاميرا موبايله مباشرة</p>
+      </div>
+
+      <!-- Stage 4: Menu Opens -->
+      <div class="stage" [class.active]="activeStep === 'open'">
+        <div class="stage-header">المنيو فتح فورًا 🎉</div>
+        <div class="opened-menu">
+          @for (item of menuItems; track item.name) {
+            <div class="opened-row">
+              <span class="dot"></span>
+              <span>{{ item.name }}</span>
+              <span class="price">{{ item.price }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step indicators -->
+  <div class="step-dots">
+    @for (step of steps; track step.key; let i = $index) {
+      <button
+        class="dot-btn"
+        [class.active]="activeIndex() === i"
+        (click)="goTo(i)"
+      >
+        <span class="dot-label">{{ step.label }}</span>
+      </button>
+    }
+  </div>
+</div>

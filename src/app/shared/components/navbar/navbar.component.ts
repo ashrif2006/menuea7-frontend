@@ -9,9 +9,4 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  isEnglish = false;
-
-  toggleLanguage() {
-    this.isEnglish = !this.isEnglish;
-  }
 }
