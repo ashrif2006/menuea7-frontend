@@ -29,14 +29,15 @@ export class PublicMenuComponent implements OnInit {
   isRtl = computed(() => this.lang() === 'ar');
 
   ngOnInit() {
-    // استدعاء الـ API كمثال للـ Slug
+
     const slug = this.route.snapshot.paramMap.get('slug')!;
 
     this.menuService.getMenu(slug).subscribe({
       next: (data) => {
         this.menu.set(data);
         if (data.categories?.length > 0) {
-          this.activeCategoryId.set(data.categories[0].id);
+          const firstWithItems = data.categories.find(c => c.items.length > 0);
+          this.activeCategoryId.set(firstWithItems ? firstWithItems.id : data.categories[0].id);
         }
         this.isLoading.set(false);
       },
@@ -51,6 +52,10 @@ export class PublicMenuComponent implements OnInit {
   toggleLang() {
     this.lang.update(l => l === 'ar' ? 'en' : 'ar');
   }
+
+  visibleCategories = computed( ()=>
+    this.menu()?.categories.filter(c => c.items.length > 0) ?? []
+  );
 
   selectCategory(id: number) {
     this.activeCategoryId.set(id);

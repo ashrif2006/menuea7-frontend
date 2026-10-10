@@ -16,6 +16,7 @@ export class MenuItemsComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private fb = inject(FormBuilder);
   menuItems = this.menuItemService.menuItems;
+  isLoading = this.menuItemService.isLoading;
   categories = this.categoryService.categories;
 
   isModalOpen = signal(false);
@@ -24,7 +25,6 @@ export class MenuItemsComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   imageWarning = signal<string | null>(null);
 
-  // true = الصنف بأحجام، false = سعر واحد
   useVariants = signal(false);
 
   selectedFile: File | null = null;
@@ -42,16 +42,20 @@ export class MenuItemsComponent implements OnInit {
     variants: this.fb.array<FormGroup>([])
   });
 
-  constructor(
-  ) {}
 
   get variants() {
     return this.form.controls.variants;
   }
 
   ngOnInit() {
+    this.isLoading.set(true);
     this.categoryService.getAll().subscribe();
-    this.menuItemService.getAll().subscribe();
+    this.menuItemService.getAll().subscribe({
+      next: (data)=>{
+        console.log('Menu Items Loaded:', data);
+      }
+    });
+    
   }
 
   getCategoryName(categoryId: number): string {
@@ -67,7 +71,7 @@ export class MenuItemsComponent implements OnInit {
     return item.price != null ? `${item.price} ج.م` : '—';
   }
 
-  // ===== الأحجام =====
+  // ===== sizes =====
   private createVariantGroup(v?: MenuItemVariant): FormGroup {
     return this.fb.nonNullable.group({
       nameAr: [v?.nameAr ?? '', Validators.required],
@@ -97,7 +101,7 @@ export class MenuItemsComponent implements OnInit {
     this.variants.removeAt(index);
   }
 
-  // ===== المودال =====
+
   openCreateModal() {
     this.editingItem.set(null);
     this.selectedFile = null;
@@ -178,7 +182,7 @@ export class MenuItemsComponent implements OnInit {
       descriptionEn: raw.descriptionEn,
       sortOrder: raw.sortOrder,
       isAvailable: raw.isAvailable,
-      // سعر واحد أو أحجام، مش الاتنين مع بعض (الـ Backend بيتحقق من كده)
+      imageUrl: editing?.imageUrl ?? undefined, 
       price: withVariants ? undefined : raw.price,
       variants: withVariants
         ? raw.variants.map((v, i) => ({

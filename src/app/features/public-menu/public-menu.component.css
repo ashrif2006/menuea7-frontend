@@ -359,3 +359,16 @@
 .brand-signature {
   color: var(--primary-gold);
 }
+
+.no-items-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+.no-items-state i {
+  font-size: 1.8rem;
+  color: var(--primary-gold);
+  opacity: 0.5;
+  margin-bottom: 12px;
+  display: block;
+}

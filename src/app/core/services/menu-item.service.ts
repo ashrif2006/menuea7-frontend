@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MenuItem, CreateMenuItemRequest, UpdateMenuItemRequest } from '../models/menu-item.model';
 
@@ -12,6 +12,7 @@ export class MenuItemService {
   menuItems = this.menuItemsSignal.asReadonly();
 
   private loadedOnce = false;
+  readonly isLoading = signal(false);
 
   constructor(private http: HttpClient) {}
 
@@ -22,12 +23,13 @@ export class MenuItemService {
         observer.complete();
       });
     }
-
+    this.isLoading.set(true);
     return this.http.get<MenuItem[]>(this.apiUrl).pipe(
       tap(data => {
         this.menuItemsSignal.set(data);
         this.loadedOnce = true;
-      })
+      }),
+      finalize(() => this.isLoading.set(false))
     );
   }
 

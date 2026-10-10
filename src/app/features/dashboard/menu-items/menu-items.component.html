@@ -9,7 +9,7 @@
   </button>
 </div>
 
-@if (categories().length === 0) {
+@if (categories().length === 0 && !isLoading()) {
   <div class="empty-state">
     <i class="fa-solid fa-layer-group"></i>
     <p>لازم تضيف تصنيف واحد على الأقل قبل ما تضيف أصناف.</p>
@@ -128,7 +128,7 @@
           <div class="variants-box" formArrayName="variants">
             @for (variant of variants.controls; track $index) {
               <div class="variant-row" [formGroupName]="$index">
-                <input type="text" formControlName="nameAr" class="form-control" placeholder="الحجم (صغير)" />
+                <input type="text" formControlName="nameAr" class="form-control " placeholder="الحجم (صغير)" />
                 <input type="text" formControlName="nameEn" class="form-control" placeholder="Size" />
                 <input type="number" formControlName="price" class="form-control price-input" placeholder="السعر" step="0.5" />
                 <button type="button" class="icon-btn danger" (click)="removeVariant($index)"
